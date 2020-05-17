@@ -8,9 +8,10 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 fun! easy_replace#replace(context)
-  let l:line = get(a:, 2, [])
-  let l:range = len(l:line) != 0 ?
-    \ l:line[0] . ',' . l:line[1] :
+  let l:line_start = get(a:context['line'], 'start', -1)
+  let l:line_end = get(a:context['line'], 'end', -1)
+  let l:range = l:line_start != -1 && l:line_end != -1 ?
+    \ l:line_start . ',' . l:line_end :
     \ '%'
 
   try

@@ -22,12 +22,14 @@ let s:code_list = {
 \  }
 
 com! EasyReplaceWord call s:replaceWord('')
+com! EasyReplaceWordInVisual call s:replaceWord('', s:getLine())
 com! EasyReplaceCurrentWord call s:replaceWord(s:getCurrentWord())
+com! EasyReplaceCurrentWordInVisual call s:replaceWord(s:getCurrentWord(), s:getLine())
 
-exe 'nnoremap ' . g:easy_replace_key .' :EasyReplaceWord<CR>'
-exe 'nnoremap ' . g:easy_replace_current_key .' :EasyReplaceCurrentWord<CR>'
-exe 'vnoremap ' . g:easy_replace_key .' :EasyReplaceWord<CR>'
-exe 'vnoremap ' . g:easy_replace_current_key .' :EasyReplaceCurrentWord<CR>'
+exe 'nnoremap ' . g:easy_replace_key .            ' :EasyReplaceWord<CR>'
+exe 'nnoremap ' . g:easy_replace_current_key .    ' :EasyReplaceCurrentWord<CR>'
+exe 'vnoremap ' . g:easy_replace_key .            ' <Esc>:EasyReplaceWordInVisual<CR>'
+exe 'vnoremap ' . g:easy_replace_current_key .    ' <Esc>:EasyReplaceCurrentWordInVisual<CR>'
 
 fun! s:replaceWord(...)
   if g:easy_replace_enable == 0
@@ -105,6 +107,21 @@ fun! s:getCurrentWord()
   let line = line(".")
   let col  = col(".")
   return expand("<cword>")
+endfun
+
+fun! s:getLine()
+  normal `<
+  let l:start = line(".")
+
+  normal `>
+  let l:end = line(".")
+
+  let l:line = {
+    \ 'start': l:start,
+    \ 'end': l:end,
+  \ }
+
+  return l:line
 endfun
 
 fun! s:echoMessage(context)
