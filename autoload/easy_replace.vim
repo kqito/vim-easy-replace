@@ -13,9 +13,14 @@ fun! easy_replace#replace(context)
   let l:range = l:line_start != -1 && l:line_end != -1 ?
     \ l:line_start . ',' . l:line_end :
     \ '%'
+  let l:replace = l:range . 's/' . a:context.pattern . '/' . a:context.replace . '/g'
 
   try
-    exe ':' . l:range . 's/' . a:context.pattern . '/' . a:context.replace . '/g'
+    exe ':' . l:replace
+
+    if g:easy_replace_add_history
+      call histadd(':', l:replace)
+    endif
   catch
     redraw
     echo 'Failed replace.'

@@ -7,14 +7,17 @@ let g:loaded_easy_replace = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:default_replace_key = '<Leader>ra'
-let s:default_replace_current_key = '<Leader>rc'
+const s:default_replace_key = '<Leader>ra'
+const s:default_replace_current_key = '<Leader>rc'
+const s:mode_pattern = 'pattern'
+const s:mode_replace = 'replace'
 
 let g:easy_replace_key = get(g:, 'default_start_key', s:default_replace_key)
 let g:easy_replace_current_key = get(g:, 'default_start_key', s:default_replace_current_key)
 let g:easy_replace_enable = get(g:, 'easy_replace_enable', 1)
 let g:easy_replace_highlight_ctermbg = get(g:, 'easy_replace_highlight_ctermbg', 'green')
 let g:easy_replace_highlight_guibg = get(g:, 'easy_replace_highlight_guibg', 'green')
+let g:easy_replace_add_history = get(g:, 'easy_replace_add_history', 1)
 
 let s:code_list = {
   \  'enter':        char2nr("\<CR>"),
@@ -23,9 +26,6 @@ let s:code_list = {
   \  'backspace':    "\<BS>",
   \  'delete':       "\<DEL>",
 \  }
-
-const s:mode_pattern = 'pattern'
-const s:mode_replace = 'replace'
 
 com! EasyReplaceWord call s:replaceWord('')
 com! EasyReplaceWordInVisual call s:replaceWord('', s:getLine())
