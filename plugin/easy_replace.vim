@@ -15,19 +15,10 @@ let g:easy_replace_current_key = get(g:, 'default_start_key', s:default_replace_
 let g:easy_replace_enable = get(g:, 'easy_replace_enable', 1)
 
 let s:code_list = {
-  \    'move'  :'109',
-  \    'focus' :'102',
-  \    'resize' :'114',
-  \    'left'  :'104',
-  \    'down'  :'106',
-  \    'up'    :'107',
-  \    'right' :'108',
-  \    'finish':'13',
-  \    'enter' :'13',
-  \    'escape':'27',
-  \    'mode'  :'101',
-  \    'cancel'  :'<C-c>',
-  \    'delete'  :'<80>kb',
+  \  'enter':        char2nr("\<CR>"),
+  \  'escape':       char2nr("\<Esc>"),
+  \  'backspace':    "\<BS>",
+  \  'delete':       "\<DEL>",
 \  }
 
 com! EasyReplaceWord call s:replaceWord()
@@ -80,7 +71,7 @@ fun! s:replaceWord(...)
       if isFinish == 1
         break
       endif
-    elseif empty(nr2char(c))
+    elseif c == s:code_list['backspace'] || c == s:code_list['delete']
       call context.update(function('s:removeChar'))
     elseif c == s:code_list['escape']
       redraw
