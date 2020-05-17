@@ -21,7 +21,7 @@ let s:code_list = {
   \  'delete':       "\<DEL>",
 \  }
 
-com! EasyReplaceWord call s:replaceWord()
+com! EasyReplaceWord call s:replaceWord('')
 com! EasyReplaceCurrentWord call s:replaceWord(s:getCurrentWord())
 
 exe 'nnoremap ' . g:easy_replace_key .' :EasyReplaceWord<CR>'
@@ -34,32 +34,17 @@ fun! s:replaceWord(...)
     return
   endif
 
+  let l:current_word = get(a:, 1, '')
+  let l:line = get(a:, 2, {})
+
   " Define context
-  let context = {}
-  let context.pattern = get(a:, 1, '')
-  let context.replace = ''
-  let context.mode = 'pattern'
-  fun! context.getTarget()
-    return self.mode == 'pattern' ? self.pattern : self.replace
-  endfun
-
-  fun! context.update(handler)
-    let target = self.getTarget()
-
-    let result = a:handler(target)
-
-    if self.mode == 'pattern'
-      let self.pattern = result
-    else
-      let self.replace = result
-    endif
-  endfun
+  let context = s:generateContext(l:current_word, l:line)
 
   if context.pattern != ''
     call easy_replace#highlight(context)
   endif
-  redraw
 
+  redraw
 
   while 1
     call s:echoMessage(context)
@@ -88,6 +73,32 @@ fun! s:replaceWord(...)
 
   match none
 
+endfun
+
+fun! s:generateContext(current_word, line)
+  let context = {}
+  let context.pattern = a:current_word
+  let context.replace = ''
+  let context.line = a:line
+  let context.mode = 'pattern'
+
+  fun! context.getTarget()
+    return self.mode == 'pattern' ? self.pattern : self.replace
+  endfun
+
+  fun! context.update(handler)
+    let target = self.getTarget()
+
+    let result = a:handler(target)
+
+    if self.mode == 'pattern'
+      let self.pattern = result
+    else
+      let self.replace = result
+    endif
+  endfun
+
+  return context
 endfun
 
 fun! s:getCurrentWord()
