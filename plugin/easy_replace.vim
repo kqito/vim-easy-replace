@@ -19,10 +19,13 @@ let g:easy_replace_highlight_guibg = get(g:, 'easy_replace_highlight_guibg', 'gr
 let s:code_list = {
   \  'enter':        char2nr("\<CR>"),
   \  'escape':       char2nr("\<Esc>"),
+  \  'ctrl-u':       char2nr("\<C-u>"),
   \  'backspace':    "\<BS>",
   \  'delete':       "\<DEL>",
-  \  'ctrl-u':       char2nr("\<C-u>"),
 \  }
+
+const s:mode_pattern = 'pattern'
+const s:mode_replace = 'replace'
 
 com! EasyReplaceWord call s:replaceWord('')
 com! EasyReplaceWordInVisual call s:replaceWord('', s:getLine())
@@ -52,25 +55,25 @@ fun! s:replaceWord(...)
   redraw
 
   while 1
-    call s:echoMessage(context)
+    call context.echoMessage()
 
     let c = getchar()
 
     if c == s:code_list['enter']
-      let isFinish =  s:nextMode(context)
+      let isFinish = context.nextMode()
       if isFinish == 1
         break
       endif
     elseif c == s:code_list['backspace'] || c == s:code_list['delete']
-      call context.update(function('s:removeChar'))
+      call context.removeChar()
     elseif c == s:code_list['ctrl-u']
-      call context.update(function('s:removeAllChar'))
+      call context.removeAllChar()
     elseif c == s:code_list['escape']
       redraw
       echo "Canceled!"
       break
     else
-      call context.update(function('s:addChar', [c]))
+      call context.addChar(c)
     endif
 
     call easy_replace#highlight(context)
@@ -87,22 +90,50 @@ fun! s:generateContext(current_word, line)
   let context.pattern = a:current_word
   let context.replace = ''
   let context.line = a:line
-  let context.mode = 'pattern'
+  let context.mode = s:mode_pattern
 
   fun! context.getTarget()
-    return self.mode == 'pattern' ? self.pattern : self.replace
+    return self.mode == s:mode_pattern ? self.pattern : self.replace
   endfun
 
-  fun! context.update(handler)
-    let target = self.getTarget()
-
-    let result = a:handler(target)
-
-    if self.mode == 'pattern'
-      let self.pattern = result
+  fun! context.update(result)
+    if self.mode == s:mode_pattern
+      let self.pattern = a:result
     else
-      let self.replace = result
+      let self.replace = a:result
     endif
+  endfun
+
+  fun! context.echoMessage()
+    echo self.mode == s:mode_pattern ?
+      \ 'Pattern: ' . self.pattern :
+      \ 'Replace: ' . self.replace
+  endfun
+
+  fun! context.addChar(c)
+    let l:target = self.getTarget()
+    call self.update(l:target . nr2char(a:c))
+  endfun
+
+  fun! context.removeChar()
+    let l:target = self.getTarget()
+    call self.update(l:target[:-2])
+  endfun
+
+  fun! context.removeAllChar()
+    call self.update('')
+  endfun
+
+  fun! context.nextMode()
+    if self.mode == s:mode_pattern
+      let self.mode = s:mode_replace
+      return 0
+    elseif self.mode == s:mode_replace
+      call easy_replace#replace(self)
+      return 1
+    endif
+
+    return 0
   endfun
 
   return context
@@ -127,36 +158,6 @@ fun! s:getLine()
   \ }
 
   return l:line
-endfun
-
-fun! s:echoMessage(context)
-  echo a:context.mode == 'pattern' ?
-    \ 'Pattern: ' . a:context.pattern :
-    \ 'Replace: ' . a:context.replace
-endfun
-
-fun! s:addChar(c, target)
-  return a:target . nr2char(a:c)
-endfun
-
-fun! s:removeChar(target)
-  return a:target[:-2]
-endfun
-
-fun! s:removeAllChar(target)
-  return ''
-endfun
-
-fun! s:nextMode(context)
-  if a:context.mode == 'pattern'
-    let a:context.mode = 'replace'
-    return 0
-  elseif a:context.mode == 'replace'
-    call easy_replace#replace(a:context)
-    return 1
-  endif
-
-  return 0
 endfun
 
 let &cpo = s:save_cpo
