@@ -19,6 +19,7 @@ let s:code_list = {
   \  'escape':       char2nr("\<Esc>"),
   \  'backspace':    "\<BS>",
   \  'delete':       "\<DEL>",
+  \  'ctrl-u':       char2nr("\<C-u>"),
 \  }
 
 com! EasyReplaceWord call s:replaceWord('')
@@ -60,6 +61,8 @@ fun! s:replaceWord(...)
       endif
     elseif c == s:code_list['backspace'] || c == s:code_list['delete']
       call context.update(function('s:removeChar'))
+    elseif c == s:code_list['ctrl-u']
+      call context.update(function('s:removeAllChar'))
     elseif c == s:code_list['escape']
       redraw
       echo "Canceled!"
@@ -136,6 +139,10 @@ endfun
 
 fun! s:removeChar(target)
   return a:target[:-2]
+endfun
+
+fun! s:removeAllChar(target)
+  return ''
 endfun
 
 fun! s:nextMode(context)
