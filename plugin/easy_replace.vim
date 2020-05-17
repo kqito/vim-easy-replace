@@ -13,6 +13,8 @@ let s:default_replace_current_key = '<Leader>rc'
 let g:easy_replace_key = get(g:, 'default_start_key', s:default_replace_key)
 let g:easy_replace_current_key = get(g:, 'default_start_key', s:default_replace_current_key)
 let g:easy_replace_enable = get(g:, 'easy_replace_enable', 1)
+let g:easy_replace_highlight_ctermbg = get(g:, 'easy_replace_highlight_ctermbg', 'green')
+let g:easy_replace_highlight_guibg = get(g:, 'easy_replace_highlight_guibg', 'green')
 
 let s:code_list = {
   \  'enter':        char2nr("\<CR>"),

@@ -29,7 +29,7 @@ fun! easy_replace#highlight(context)
     return
   endif
 
-  highlight EasyReplace ctermbg=green guibg=green
+  exe 'highlight EasyReplace ctermbg=' . g:easy_replace_highlight_ctermbg . ' guibg=' . g:easy_replace_highlight_guibg
   let l:line_start = get(a:context['line'], 'start', -1)
   let l:line_end = get(a:context['line'], 'end', -1)
   let l:range = l:line_start != -1 && l:line_end != -1 ?
