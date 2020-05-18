@@ -50,14 +50,14 @@ fun! easy_replace#highlight(context)
   endtry
 endfun
 
-fun! easy_replace#generateContext(current_word, line)
+fun! easy_replace#generate_context(current_word, line)
   let context = {}
   let context.pattern = a:current_word
   let context.replace = ''
   let context.line = a:line
   let context.mode = s:mode_pattern
 
-  fun! context.getTarget()
+  fun! context.get_target()
     return self.mode == s:mode_pattern ? self.pattern : self.replace
   endfun
 
@@ -69,27 +69,27 @@ fun! easy_replace#generateContext(current_word, line)
     endif
   endfun
 
-  fun! context.echoMessage()
+  fun! context.echo_message()
     echo self.mode == s:mode_pattern ?
       \ 'Pattern: ' . self.pattern :
       \ 'Replace: ' . self.replace
   endfun
 
-  fun! context.addChar(c)
-    let l:target = self.getTarget()
+  fun! context.add_char(c)
+    let l:target = self.get_target()
     call self.update(l:target . nr2char(a:c))
   endfun
 
-  fun! context.removeChar()
-    let l:target = self.getTarget()
+  fun! context.remove_char()
+    let l:target = self.get_target()
     call self.update(l:target[:-2])
   endfun
 
-  fun! context.removeAllChar()
+  fun! context.remove_all_char()
     call self.update('')
   endfun
 
-  fun! context.nextMode()
+  fun! context.next_mode()
     if self.mode == s:mode_pattern
       let self.mode = s:mode_replace
       return 0
