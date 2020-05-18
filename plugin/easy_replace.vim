@@ -12,11 +12,11 @@ const s:default_launch_word_key = '<Leader>rc'
 const s:default_launch_in_visual_key = '<Leader>ra'
 const s:default_launch_word_in_visual_key = '<Leader>rc'
 
+let g:easy_replace_enable = get(g:, 'easy_replace_enable', 1)
 let g:easy_replace_launch_key = get(g:, 'easy_replace_launch_key', s:default_launch_key)
 let g:easy_replace_launch_word_key = get(g:, 'easy_replace_launch_word_key', s:default_launch_word_key)
 let g:easy_replace_launch_in_visual_key = get(g:, 'easy_replace_launch_in_visual_key', s:default_launch_in_visual_key)
 let g:easy_replace_launch_word_in_visual_key = get(g:, 'easy_replace_launch_word_in_visual_key', s:default_launch_word_in_visual_key)
-let g:easy_replace_enable = get(g:, 'easy_replace_enable', 1)
 let g:easy_replace_highlight_ctermbg = get(g:, 'easy_replace_highlight_ctermbg', 'green')
 let g:easy_replace_highlight_guibg = get(g:, 'easy_replace_highlight_guibg', 'green')
 let g:easy_replace_add_history = get(g:, 'easy_replace_add_history', 1)
