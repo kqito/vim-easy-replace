@@ -56,6 +56,7 @@ fun! easy_replace#generate_context(current_word, line)
   let context.replace = ''
   let context.line = a:line
   let context.mode = s:mode_pattern
+  let context.arrow_index = 0
 
   fun! context.get_target()
     return self.mode == s:mode_pattern ? self.pattern : self.replace
@@ -70,23 +71,58 @@ fun! easy_replace#generate_context(current_word, line)
   endfun
 
   fun! context.echo_message()
-    echo self.mode == s:mode_pattern ?
-      \ 'Pattern: ' . self.pattern :
-      \ 'Replace: ' . self.replace
+    echon self.mode == s:mode_pattern ? 'Pattern: ': 'Replace: '
+
+    let index = 0
+    let l:target = self.get_target()
+    for char in split(l:target, '\zs')
+      if self.arrow_index == index
+        echohl Cursor
+      endif
+
+      echon char
+
+      let index += 1
+      echohl None
+    endfor
+
+    " if cursor position is last
+    if self.arrow_index == strlen(l:target)
+      echohl Cursor
+      echon " "
+      echohl None
+    else
+      echon " "
+    endif
   endfun
 
   fun! context.add_char(c)
     let l:target = self.get_target()
-    call self.update(l:target . nr2char(a:c))
+    let prefix = self.arrow_index - 1 >= 0 ? l:target[0:self.arrow_index - 1] : ""
+    let suffix = l:target[self.arrow_index:-1]
+
+    call self.update(prefix . nr2char(a:c) . suffix)
+    call self.update_arrow_index(1)
   endfun
 
   fun! context.remove_char()
-    let l:target = self.get_target()
-    call self.update(l:target[:-2])
+    let l:new = ""
+    let index = 0
+    for char in split(self.get_target(), '\zs')
+      if self.arrow_index != index + 1
+        let l:new = l:new . char
+      endif
+
+      let index += 1
+    endfor
+
+    call self.update(l:new)
+    call self.update_arrow_index(-1)
   endfun
 
   fun! context.remove_all_char()
     call self.update('')
+    let self.arrow_index = 0
   endfun
 
   fun! context.next_mode()
@@ -99,6 +135,14 @@ fun! easy_replace#generate_context(current_word, line)
     endif
 
     return 0
+  endfun
+
+  fun! context.update_arrow_index(i)
+    let l:target = self.get_target()
+    let new_arrow_index = self.arrow_index + a:i
+    if new_arrow_index <= strlen(l:target) && new_arrow_index >= 0
+      let self.arrow_index = new_arrow_index
+    endif
   endfun
 
   return context

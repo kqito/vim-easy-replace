@@ -27,6 +27,8 @@ let s:code_list = {
   \  'ctrl-u':       char2nr("\<C-u>"),
   \  'backspace':    "\<BS>",
   \  'delete':       "\<DEL>",
+  \  'left-arrow':   "\<Left>",
+  \  'right-arrow':  "\<Right>",
 \  }
 
 com! EasyReplaceWord call s:replaceWord('')
@@ -65,6 +67,10 @@ fun! s:replaceWord(...)
       if isFinish == 1
         break
       endif
+    elseif c == s:code_list['left-arrow']
+      call context.update_arrow_index(-1)
+    elseif c == s:code_list['right-arrow']
+      call context.update_arrow_index(1)
     elseif c == s:code_list['backspace'] || c == s:code_list['delete']
       call context.remove_char()
     elseif c == s:code_list['ctrl-u']
