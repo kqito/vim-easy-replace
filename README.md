@@ -1,8 +1,12 @@
 # vim-easy-replace
+![License](https://img.shields.io/github/license/kqito/vim-easy-replace)
+
 vim plugin for quick and easy replacement
 
 ## Demo
-![Demo](https://user-images.githubusercontent.com/29191111/89023258-3e126180-d35e-11ea-8395-9e7e9e038839.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29191111/89023451-8e89bf00-d35e-11ea-9f7f-58c0c661f1cb.gif" width="800" alt="demo">
+</p>
 
 
 ## Features
