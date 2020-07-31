@@ -18,6 +18,8 @@ fun! easy_replace#replace(context)
     \ '%'
   let l:replace = l:range . 's/' . a:context.pattern . '/' . a:context.replace . '/g'
 
+  redraw
+
   try
     exe ':' . l:replace
 
@@ -25,7 +27,6 @@ fun! easy_replace#replace(context)
       call histadd(':', l:replace)
     endif
   catch
-    redraw
     echo 'Failed replace.'
   endtry
 
@@ -56,7 +57,7 @@ fun! easy_replace#generate_context(current_word, line)
   let context.replace = ''
   let context.line = a:line
   let context.mode = s:mode_pattern
-  let context.arrow_index = 0
+  let context.arrow_index = strlen(a:current_word)
 
   fun! context.get_target()
     return self.mode == s:mode_pattern ? self.pattern : self.replace
@@ -128,6 +129,7 @@ fun! easy_replace#generate_context(current_word, line)
   fun! context.next_mode()
     if self.mode == s:mode_pattern
       let self.mode = s:mode_replace
+      let self.arrow_index = 0
       return 0
     elseif self.mode == s:mode_replace
       call easy_replace#replace(self)
