@@ -21,35 +21,43 @@ const s:default_launch_word_in_visual_key = '<Leader>rc'
 
 ""
 " Enable easy-replace. (If set 0, easy-replace will not work.)
-let g:easy_replace_enable = get(g:, 'easy_replace_enable', 1)
+let g:easy_replace_enable =
+  \ get(g:, 'easy_replace_enable', 1)
 
 ""
 " Key to launch easy_replace
-let g:easy_replace_launch_key = get(g:, 'easy_replace_launch_key', s:default_launch_key)
+let g:easy_replace_launch_key =
+  \ get(g:, 'easy_replace_launch_key', s:default_launch_key)
 
 ""
 " Key to launch in visual mode easy_replace
-let g:easy_replace_launch_word_key = get(g:, 'easy_replace_launch_word_key', s:default_launch_word_key)
+let g:easy_replace_launch_word_key =
+  \ get(g:, 'easy_replace_launch_word_key', s:default_launch_word_key)
 
 ""
 " Key to replace the word under the cursor with "easy_replace".
-let g:easy_replace_launch_in_visual_key = get(g:, 'easy_replace_launch_in_visual_key', s:default_launch_in_visual_key)
+let g:easy_replace_launch_in_visual_key =
+  \ get(g:, 'easy_replace_launch_in_visual_key', s:default_launch_in_visual_key)
 
 ""
 "	Key to replace the word under the cursor in visual mode with "easy_replace".
-let g:easy_replace_launch_word_in_visual_key = get(g:, 'easy_replace_launch_word_in_visual_key', s:default_launch_word_in_visual_key)
+let g:easy_replace_launch_word_in_visual_key =
+  \ get(g:, 'easy_replace_launch_word_in_visual_key', s:default_launch_word_in_visual_key)
 
 ""
 " Color for highlighting the replacement target.
-let g:easy_replace_highlight_ctermbg = get(g:, 'easy_replace_highlight_ctermbg', 'green')
+let g:easy_replace_highlight_ctermbg =
+  \ get(g:, 'easy_replace_highlight_ctermbg', 'green')
 
 ""
 " Color for highlighting the replacement target.
-let g:easy_replace_highlight_guibg = get(g:, 'easy_replace_highlight_guibg', 'green')
+let g:easy_replace_highlight_guibg =
+  \ get(g:, 'easy_replace_highlight_guibg', 'green')
 
 ""
 " Leave the replace command in the command line history after the replacement.
-let g:easy_replace_add_history = get(g:, 'easy_replace_add_history', 1)
+let g:easy_replace_add_history =
+  \ get(g:, 'easy_replace_add_history', 1)
 
 
 let s:code_list = {
@@ -82,9 +90,9 @@ com! EasyReplaceCurrentWord call s:replaceWord(s:get_current_word())
 " it will start replacing with the word under the current cursor set as the target.
 com! EasyReplaceCurrentWordInVisual call s:replaceWord(s:get_current_word(), s:get_line())
 
-exe 'nnoremap ' . g:easy_replace_launch_key .                         ' :EasyReplaceWord<CR>'
+exe 'nnoremap ' . g:easy_replace_launch_key .                 ' :EasyReplaceWord<CR>'
 exe 'nnoremap ' . g:easy_replace_launch_word_key .            ' :EasyReplaceCurrentWord<CR>'
-exe 'vnoremap ' . g:easy_replace_launch_in_visual_key .               ' <Esc>:EasyReplaceWordInVisual<CR>'
+exe 'vnoremap ' . g:easy_replace_launch_in_visual_key .       ' <Esc>:EasyReplaceWordInVisual<CR>'
 exe 'vnoremap ' . g:easy_replace_launch_word_in_visual_key .  ' <Esc>:EasyReplaceCurrentWordInVisual<CR>'
 
 fun! s:replaceWord(...)
