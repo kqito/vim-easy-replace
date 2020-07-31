@@ -2,7 +2,7 @@
 vim plugin for quick and easy replacement
 
 ## Demo
-![Demo](https://user-images.githubusercontent.com/29191111/82205753-004a9300-9942-11ea-8768-3bbcd67ea2ff.gif)
+![Demo](https://user-images.githubusercontent.com/29191111/89023258-3e126180-d35e-11ea-8395-9e7e9e038839.gif)
 
 
 ## Features
