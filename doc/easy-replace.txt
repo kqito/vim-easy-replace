@@ -1,0 +1,66 @@
+*easy-replace.txt*	Vim plugin for quick and easy replacement
+kqito                                                           *easy-replace*
+
+==============================================================================
+CONTENTS                                               *easy-replace-contents*
+  1. Introduction.........................................|easy-replace-intro|
+  2. Configuration.......................................|easy-replace-config|
+  3. Commands..........................................|easy-replace-commands|
+
+==============================================================================
+INTRODUCTION                                              *easy-replace-intro*
+
+easy-reaplace is a plugin that makes it easy to perform replacements. It
+highlights the replacement target in real time, allowing you to do interactive
+replacements. By default, you can use "<Leader>ra" for easy-replace
+
+==============================================================================
+CONFIGURATION                                            *easy-replace-config*
+
+                                                       *g:easy_replace_enable*
+Enable easy-replace. (If set 0, easy-replace will not work.)
+
+                                                   *g:easy_replace_launch_key*
+Key to launch easy_replace
+
+                                              *g:easy_replace_launch_word_key*
+Key to launch in visual mode easy_replace
+
+                                         *g:easy_replace_launch_in_visual_key*
+Key to replace the word under the cursor with "easy_replace".
+
+                                    *g:easy_replace_launch_word_in_visual_key*
+        Key to replace the word under the cursor in visual mode with
+"easy_replace".
+
+                                            *g:easy_replace_highlight_ctermbg*
+Color for highlighting the replacement target.
+
+                                              *g:easy_replace_highlight_guibg*
+Color for highlighting the replacement target.
+
+                                                  *g:easy_replace_add_history*
+Leave the replace command in the command line history after the replacement.
+
+==============================================================================
+COMMANDS                                               *easy-replace-commands*
+
+:EasyReplaceWord                                            *:EasyReplaceWord*
+  Start replacing with the easy replace plugin.
+
+:EasyReplaceWordInVisual                            *:EasyReplaceWordInVisual*
+  Start replacing with the easy replace plugin; unlike the EasyReplaceWord
+  command, it will start replacing with the word under the current cursor set
+  as the target.
+
+:EasyReplaceCurrentWord                              *:EasyReplaceCurrentWord*
+  Start replacing the selected line in visual mode with the easy replace
+  plugin.
+
+:EasyReplaceCurrentWordInVisual              *:EasyReplaceCurrentWordInVisual*
+  Start replacing the selected line in visual mode with the easy replace
+  plugin. unlike the EasyReplaceCurrentWord command, it will start replacing
+  with the word under the current cursor set as the target.
+
+
+vim:tw=78:ts=8:ft=help:norl:
