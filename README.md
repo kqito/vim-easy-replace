@@ -56,3 +56,7 @@ You can customize some options.
 |g:easy_replace_highlight_ctermbg|'green'|Color for highlighting the replacement target.|
 |g:easy_replace_highlight_guibg|'green'|Color for highlighting the replacement target.|
 |g:easy_replace_add_history|1|Leave the replace command in the command line history after the replacement.|
+
+
+## License
+[MIT © kqito](./LICENSE)
