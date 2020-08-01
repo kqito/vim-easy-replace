@@ -10,15 +10,20 @@ set cpo&vim
 const s:mode_pattern = 'pattern'
 const s:mode_replace = 'replace'
 
-fun! easy_replace#replace(context)
-  let l:line_start = get(a:context['line'], 'start', -1)
-  let l:line_end = get(a:context['line'], 'end', -1)
+fun! easy_replace#replace()
+  let context = g:easy_replace_context
+
+  let l:line_start = get(context['line'], 'start', -1)
+  let l:line_end = get(context['line'], 'end', -1)
   let l:range = l:line_start != -1 && l:line_end != -1 ?
     \ l:line_start . ',' . l:line_end :
     \ '%'
-  let l:replace = l:range . 's/' . a:context.pattern . '/' . a:context.replace . '/g'
+  let l:replace = l:range . 's/' . context.pattern . '/' . context.replace . '/g'
 
   redraw
+
+  call easy_replace#exit()
+  call win_gotoid(context.origin_window_id)
 
   try
     exe ':' . l:replace
@@ -29,26 +34,54 @@ fun! easy_replace#replace(context)
   catch
     echo 'Failed replace.'
   endtry
-
 endfun
 
-fun! easy_replace#highlight(context)
-  if a:context.pattern == ''
+fun! easy_replace#highlight()
+  let context = g:easy_replace_context
+  if context.pattern == ''
     match none
     return
   endif
 
   exe 'highlight EasyReplace ctermbg=' . g:easy_replace_highlight_ctermbg . ' guibg=' . g:easy_replace_highlight_guibg
-  let l:line_start = get(a:context['line'], 'start', -1)
-  let l:line_end = get(a:context['line'], 'end', -1)
+  let l:line_start = get(context['line'], 'start', -1)
+  let l:line_end = get(context['line'], 'end', -1)
   let l:range = l:line_start != -1 && l:line_end != -1 ?
     \ '\%>' . (l:line_start - 1) . 'l\%<' . (l:line_end + 1) . 'l':
     \ ''
 
   try
-    exe 'match EasyReplace /' . l:range . a:context.pattern . '/'
+    call win_gotoid(context.origin_window_id)
+    exe 'match EasyReplace /' . l:range . context.pattern . '/'
+    call win_gotoid(context.easy_replace_window_id)
   catch
+    echo v:exception
+    call easy_replace#exit()
   endtry
+endfun
+
+fun! easy_replace#update_char(char)
+  let char = getline(".") . a:char
+  call g:easy_replace_context.add_char(char)
+endfun
+
+fun! easy_replace#next_mode()
+  call g:easy_replace_context.next_mode()
+endfun
+
+fun! easy_replace#exit()
+  if &filetype != 'easy_replace'
+    return
+  endif
+
+  stopinsert
+  bwipeout!
+  match none
+endfun
+
+fun! easy_replace#register_map()
+  inoremap <buffer> <silent> <ESC> <ESC>:call easy_replace#exit()<CR>
+  inoremap <buffer> <silent> <CR> <ESC>:call easy_replace#next_mode()<CR>
 endfun
 
 fun! easy_replace#generate_context(current_word, line)
@@ -57,94 +90,60 @@ fun! easy_replace#generate_context(current_word, line)
   let context.replace = ''
   let context.line = a:line
   let context.mode = s:mode_pattern
-  let context.arrow_index = strlen(a:current_word)
+  let context.origin_window_id = 0
+  let context.easy_replace_window_id = 0
 
   fun! context.get_target()
     return self.mode == s:mode_pattern ? self.pattern : self.replace
   endfun
 
-  fun! context.update(result)
+  fun! context.update(char)
     if self.mode == s:mode_pattern
-      let self.pattern = a:result
+      let self.pattern = a:char
     else
-      let self.replace = a:result
+      let self.replace = a:char
     endif
   endfun
 
-  fun! context.echo_message()
+  fun! context.echo_mode()
     echon self.mode == s:mode_pattern ? 'Pattern: ': 'Replace: '
-
-    let index = 0
-    let l:target = self.get_target()
-    for char in split(l:target, '\zs')
-      if self.arrow_index == index
-        echohl Cursor
-      endif
-
-      echon char
-
-      let index += 1
-      echohl None
-    endfor
-
-    " if cursor position is last
-    if self.arrow_index == strlen(l:target)
-      echohl Cursor
-      echon " "
-      echohl None
-    else
-      echon " "
-    endif
   endfun
 
-  fun! context.add_char(c)
-    let l:target = self.get_target()
-    let prefix = self.arrow_index - 1 >= 0 ? l:target[0:self.arrow_index - 1] : ""
-    let suffix = l:target[self.arrow_index:-1]
-
-    call self.update(prefix . nr2char(a:c) . suffix)
-    call self.update_arrow_index(1)
-  endfun
-
-  fun! context.remove_char()
-    let l:new = ""
-    let index = 0
-    for char in split(self.get_target(), '\zs')
-      if self.arrow_index != index + 1
-        let l:new = l:new . char
-      endif
-
-      let index += 1
-    endfor
-
-    call self.update(l:new)
-    call self.update_arrow_index(-1)
-  endfun
-
-  fun! context.remove_all_char()
-    call self.update('')
-    let self.arrow_index = 0
+  fun! context.add_char(char)
+    call self.update(a:char)
+    call easy_replace#highlight()
   endfun
 
   fun! context.next_mode()
+    call win_gotoid(self.easy_replace_window_id)
+    if &filetype != 'easy_replace'
+      return
+    endif
+
     if self.mode == s:mode_pattern
       let self.mode = s:mode_replace
-      let self.arrow_index = 0
-      return 0
-    elseif self.mode == s:mode_replace
-      call easy_replace#replace(self)
-      return 1
+      normal! ggdG
+      startinsert
+      call self.echo_mode()
+      return
     endif
 
-    return 0
+    call easy_replace#replace()
   endfun
 
-  fun! context.update_arrow_index(i)
-    let l:target = self.get_target()
-    let new_arrow_index = self.arrow_index + a:i
-    if new_arrow_index <= strlen(l:target) && new_arrow_index >= 0
-      let self.arrow_index = new_arrow_index
-    endif
+  fun! context.start()
+    let self.origin_window_id = win_getid()
+
+    bo 1new
+    call easy_replace#register_map()
+    let self.easy_replace_window_id = win_getid()
+    set filetype=easy_replace
+    setl nonumber
+    set bufhidden=wipe
+
+    startinsert
+
+    call self.echo_mode()
   endfun
 
   return context
