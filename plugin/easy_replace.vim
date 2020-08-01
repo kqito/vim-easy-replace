@@ -15,9 +15,9 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 const s:default_launch_key = '<Leader>ra'
-const s:default_launch_word_key = '<Leader>rc'
+const s:default_launch_cword_key = '<Leader>rc'
 const s:default_launch_in_visual_key = '<Leader>ra'
-const s:default_launch_word_in_visual_key = '<Leader>rc'
+const s:default_launch_cword_in_visual_key = '<Leader>rc'
 
 ""
 " Enable easy-replace. (If set 0, easy-replace will not work.)
@@ -31,8 +31,8 @@ let g:easy_replace_launch_key =
 
 ""
 " Key to launch in visual mode easy_replace
-let g:easy_replace_launch_word_key =
-  \ get(g:, 'easy_replace_launch_word_key', s:default_launch_word_key)
+let g:easy_replace_launch_cword_key =
+  \ get(g:, 'easy_replace_launch_cword_key', s:default_launch_cword_key)
 
 ""
 " Key to replace the word under the cursor with "easy_replace".
@@ -41,8 +41,8 @@ let g:easy_replace_launch_in_visual_key =
 
 ""
 "	Key to replace the word under the cursor in visual mode with "easy_replace".
-let g:easy_replace_launch_word_in_visual_key =
-  \ get(g:, 'easy_replace_launch_word_in_visual_key', s:default_launch_word_in_visual_key)
+let g:easy_replace_launch_cword_in_visual_key =
+  \ get(g:, 'easy_replace_launch_cword_in_visual_key', s:default_launch_cword_in_visual_key)
 
 ""
 " Color for highlighting the replacement target.
@@ -59,8 +59,6 @@ let g:easy_replace_highlight_guibg =
 let g:easy_replace_add_history =
   \ get(g:, 'easy_replace_add_history', 1)
 
-""
-" Leave the replace command in the command line history after the replacement.
 let g:easy_replace_context = {}
 
 
@@ -86,19 +84,19 @@ com! EasyReplaceWordInVisual call s:replaceWord('', s:get_line())
 
 ""
 " Start replacing the selected line in visual mode with the easy replace plugin.
-com! EasyReplaceCurrentWord call s:replaceWord(s:get_current_word(), {})
+com! EasyReplaceCword call s:replaceWord(s:get_current_word(), {})
 
 ""
 " Start replacing the selected line in visual mode with the easy replace plugin.
 " unlike the EasyReplaceCurrentWord command,
 " it will start replacing with the word under the current cursor set as the target.
-com! EasyReplaceCurrentWordInVisual call s:replaceWord(s:get_current_word(), s:get_line())
+com! EasyReplaceCwordInVisual call s:replaceWord(s:get_current_word(), s:get_line())
 
 
 exe 'nnoremap ' . g:easy_replace_launch_key .                 ' :EasyReplaceWord<CR>'
-exe 'nnoremap ' . g:easy_replace_launch_word_key .            ' :EasyReplaceCurrentWord<CR>'
+exe 'nnoremap ' . g:easy_replace_launch_cword_key .            ' :EasyReplaceCword<CR>'
 exe 'vnoremap ' . g:easy_replace_launch_in_visual_key .       ' <Esc>:EasyReplaceWordInVisual<CR>'
-exe 'vnoremap ' . g:easy_replace_launch_word_in_visual_key .  ' <Esc>:EasyReplaceCurrentWordInVisual<CR>'
+exe 'vnoremap ' . g:easy_replace_launch_cword_in_visual_key .  ' <Esc>:EasyReplaceCwordInVisual<CR>'
 
 augroup EasyReplace
   autocmd!

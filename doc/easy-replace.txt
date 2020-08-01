@@ -23,13 +23,13 @@ Enable easy-replace. (If set 0, easy-replace will not work.)
                                                    *g:easy_replace_launch_key*
 Key to launch easy_replace
 
-                                              *g:easy_replace_launch_word_key*
+                                             *g:easy_replace_launch_cword_key*
 Key to launch in visual mode easy_replace
 
                                          *g:easy_replace_launch_in_visual_key*
 Key to replace the word under the cursor with "easy_replace".
 
-                                    *g:easy_replace_launch_word_in_visual_key*
+                                   *g:easy_replace_launch_cword_in_visual_key*
         Key to replace the word under the cursor in visual mode with
 "easy_replace".
 
@@ -53,11 +53,11 @@ COMMANDS                                               *easy-replace-commands*
   command, it will start replacing with the word under the current cursor set
   as the target.
 
-:EasyReplaceCurrentWord                              *:EasyReplaceCurrentWord*
+:EasyReplaceCword                                          *:EasyReplaceCword*
   Start replacing the selected line in visual mode with the easy replace
   plugin.
 
-:EasyReplaceCurrentWordInVisual              *:EasyReplaceCurrentWordInVisual*
+:EasyReplaceCwordInVisual                          *:EasyReplaceCwordInVisual*
   Start replacing the selected line in visual mode with the easy replace
   plugin. unlike the EasyReplaceCurrentWord command, it will start replacing
   with the word under the current cursor set as the target.

@@ -48,15 +48,15 @@ You can install it as follows.
 
 
 ## Customize options
-You can customize some options. 
+You can customize some options.
 
 |variable name|default value|description|
 |:-----------|:---------:|:----------|
 |g:easy_replace_enable|1|Enable `easy-replace`. (If set 0, `easy-replace` will not work.)|
 |g:easy_replace_launch_key|\<Leader\>ra|Key to launch `easy_replace`|
 |g:easy_replace_launch_in_visual_key|\<Leader\>ra|Key to launch in visual mode `easy_replace`|
-|g:easy_replace_launch_word_key|\<Leader\>rc|Key to replace the word under the cursor with "easy_replace".|
-|g:easy_replace_launch_word_in_visual_key|\<Leader\>rc|Key to replace the word under the cursor in visual mode with "easy_replace".|
+|g:easy_replace_launch_cword_key|\<Leader\>rc|Key to replace the word under the cursor with "easy_replace".|
+|g:easy_replace_launch_cword_in_visual_key|\<Leader\>rc|Key to replace the word under the cursor in visual mode with "easy_replace".|
 |g:easy_replace_highlight_ctermbg|'green'|Color for highlighting the replacement target.|
 |g:easy_replace_highlight_guibg|'green'|Color for highlighting the replacement target.|
 |g:easy_replace_add_history|1|Leave the replace command in the command line history after the replacement.|
