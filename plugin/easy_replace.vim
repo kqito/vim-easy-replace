@@ -114,7 +114,6 @@ fun! s:replaceWord(...)
 
   let l:current_word = get(a:, 1, '')
   let l:line = get(a:, 2, {})
-
   let g:easy_replace_context = easy_replace#generate_context(l:current_word, l:line)
 
   call g:easy_replace_context.start()

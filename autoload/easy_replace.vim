@@ -141,9 +141,13 @@ fun! easy_replace#generate_context(current_word, line)
     setl nonumber
     set bufhidden=wipe
 
-    startinsert
+    " Insert pattern if current word is read
+    call setline(".", self.pattern)
+
+    startinsert!
 
     call self.echo_mode()
+    call easy_replace#highlight()
   endfun
 
   return context
