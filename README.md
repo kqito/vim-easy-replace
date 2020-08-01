@@ -5,7 +5,7 @@ vim plugin for quick and easy replacement
 
 ## Demo
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/29191111/89023451-8e89bf00-d35e-11ea-9f7f-58c0c661f1cb.gif" width="800" alt="demo">
+  <img src="https://user-images.githubusercontent.com/29191111/89102455-5361bb80-d444-11ea-9d0a-6332e532b48c.gif" width="800" alt="demo">
 </p>
 
 
