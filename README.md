@@ -11,7 +11,7 @@ vim plugin for quick and easy replacement
 
 ## Features
 - Intuitive replacements.
-- Highlight to be replaced.
+- Real-time highlighting of replacement targets.
 - Easily replace the word under the cursor.
 - Leave the replacement history in the command line history.
 - The function to replace only the selected area in visual mode.
