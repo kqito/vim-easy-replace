@@ -105,10 +105,6 @@ fun! easy_replace#generate_context(current_word, line)
     endif
   endfun
 
-  fun! context.echo_mode()
-    echon self.mode == s:mode_pattern ? 'Pattern: ': 'Replace: '
-  endfun
-
   fun! context.add_char(char)
     call self.update(a:char)
     call easy_replace#highlight()
@@ -122,9 +118,9 @@ fun! easy_replace#generate_context(current_word, line)
 
     if self.mode == s:mode_pattern
       let self.mode = s:mode_replace
-      normal! ggdG
+      silent normal! ggdG
+      silent file \[easy-replace\] replace mode
       startinsert
-      call self.echo_mode()
       return
     endif
 
@@ -140,13 +136,13 @@ fun! easy_replace#generate_context(current_word, line)
     set filetype=easy_replace
     setl nonumber
     set bufhidden=wipe
+    silent file \[easy-replace\] target mode
 
     " Insert pattern if current word is read
     call setline(".", self.pattern)
 
     startinsert!
 
-    call self.echo_mode()
     call easy_replace#highlight()
   endfun
 
