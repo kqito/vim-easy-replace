@@ -23,7 +23,6 @@ fun! easy_replace#replace()
   redraw
 
   call easy_replace#exit()
-  call win_gotoid(context.origin_window_id)
 
   try
     exe ':' . l:replace
@@ -76,6 +75,11 @@ fun! easy_replace#exit()
 
   stopinsert
   bwipeout!
+
+  " Go back origin window
+  let context = g:easy_replace_context
+  call win_gotoid(context.origin_window_id)
+
   match none
 endfun
 
