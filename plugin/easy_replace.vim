@@ -96,13 +96,6 @@ exe 'nnoremap ' . g:easy_replace_launch_cword_key .            ' :EasyReplaceCwo
 exe 'vnoremap ' . g:easy_replace_launch_in_visual_key .       ' <Esc>:EasyReplaceWordInVisual<CR>'
 exe 'vnoremap ' . g:easy_replace_launch_cword_in_visual_key .  ' <Esc>:EasyReplaceCwordInVisual<CR>'
 
-augroup EasyReplace
-  autocmd!
-
-  autocmd TextChangedI,TextChangedP * if &filetype == "easy_replace" | call easy_replace#update_char() | endif
-augroup END
-
-
 fun! s:replaceWord(...)
   if g:easy_replace_enable == 0
     return
