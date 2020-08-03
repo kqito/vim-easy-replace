@@ -109,8 +109,10 @@ fun! easy_replace#generate_context(current_word, line)
     endif
   endfun
 
-  fun! context.echo_mode()
-    echon self.mode == s:mode_pattern ? 'Pattern: ': 'Replace: '
+  fun! context.echo_status()
+    echon self.mode == s:mode_pattern ?
+          \ '[easy-replace] pattern mode':
+          \ '[easy-replace] replace mode'
   endfun
 
   fun! context.add_char(char)
@@ -128,7 +130,7 @@ fun! easy_replace#generate_context(current_word, line)
       let self.mode = s:mode_replace
       normal! ggdG
       startinsert
-      call self.echo_mode()
+      call self.echo_status()
       return
     endif
 
@@ -150,7 +152,7 @@ fun! easy_replace#generate_context(current_word, line)
 
     startinsert!
 
-    call self.echo_mode()
+    call self.echo_status()
     call easy_replace#highlight()
   endfun
 
