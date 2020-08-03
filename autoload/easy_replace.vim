@@ -13,18 +13,26 @@ const s:mode_pattern = 'pattern'
 const s:mode_replace = 'replace'
 
 fun! easy_replace#start(current_word, line)
-  if has_key(s:context, "easy_replace_window_id") && win_gotoid(s:context.easy_replace_window_id)
-    let context = s:context.mode == s:mode_pattern ?
-      \ s:context.pattern :
-      \ s:context.replace
-    normal! ggdG
-    call setline(".", context)
+  let origin_window_id = has_key(s:context, 'origin_window_id') ?
+    \ s:context.origin_window_id :
+    \ 0
+  let easy_replace_window_id = has_key(s:context, 'easy_replace_window_id') ?
+    \ s:context.easy_replace_window_id :
+    \ 0
+  let s:context = easy_replace#generate_context(a:current_word, a:line)
 
-    startinsert!
-  else
-    let s:context = easy_replace#generate_context(a:current_word, a:line)
+  if !easy_replace_window_id || !win_gotoid(easy_replace_window_id)
     call easy_replace#create_window()
+  else
+    " If easy-replace window already exists, register the window id again.
+    let s:context.origin_window_id = origin_window_id
+    let s:context.easy_replace_window_id = easy_replace_window_id
   endif
+
+  " Insert pattern if current word is read
+  normal! ggdG
+  call setline(".", s:context.pattern)
+  startinsert!
 
   call easy_replace#echo_status()
   call easy_replace#highlight()
@@ -138,11 +146,6 @@ fun! easy_replace#create_window()
   inoremap <buffer> <silent> <ESC> <ESC>:call easy_replace#exit()<CR>
   inoremap <buffer> <silent> <CR> <ESC>:call easy_replace#next_mode()<CR>
   autocmd TextChangedI,TextChangedP <buffer> call easy_replace#update_char()
-
-  " Insert pattern if current word is read
-  call setline(".", s:context.pattern)
-
-  startinsert!
 endfun
 
 fun! easy_replace#echo_status()
