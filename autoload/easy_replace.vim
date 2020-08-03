@@ -131,9 +131,11 @@ fun! easy_replace#exit()
   stopinsert
   bwipeout!
 
-  " Go back origin window
-  call win_gotoid(s:context.origin_window_id)
+  call easy_replace#stop_highlight()
+endfun
 
+fun! easy_replace#stop_highlight()
+  call win_gotoid(s:context.origin_window_id)
   match none
 endfun
 
@@ -146,6 +148,7 @@ fun! easy_replace#create_window()
   inoremap <buffer> <silent> <ESC> <ESC>:call easy_replace#exit()<CR>
   inoremap <buffer> <silent> <CR> <ESC>:call easy_replace#next_mode()<CR>
   autocmd TextChangedI,TextChangedP <buffer> call easy_replace#update_char()
+  autocmd BufWinLeave <buffer> call easy_replace#stop_highlight()
 endfun
 
 fun! easy_replace#echo_status()
