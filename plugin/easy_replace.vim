@@ -59,8 +59,6 @@ let g:easy_replace_highlight_guibg =
 let g:easy_replace_add_history =
   \ get(g:, 'easy_replace_add_history', 1)
 
-let g:easy_replace_context = {}
-
 
 let s:code_list = {
   \  'enter':        char2nr("\<CR>"),
@@ -101,7 +99,7 @@ exe 'vnoremap ' . g:easy_replace_launch_cword_in_visual_key .  ' <Esc>:EasyRepla
 augroup EasyReplace
   autocmd!
 
-  au InsertCharPre * if &filetype == "easy_replace" | call easy_replace#update_char(v:char) | endif
+  autocmd TextChangedI,TextChangedP * if &filetype == "easy_replace" | call easy_replace#update_char() | endif
 augroup END
 
 
@@ -112,9 +110,8 @@ fun! s:replaceWord(...)
 
   let l:current_word = get(a:, 1, '')
   let l:line = get(a:, 2, {})
-  let g:easy_replace_context = easy_replace#generate_context(l:current_word, l:line)
 
-  call g:easy_replace_context.start()
+  call easy_replace#start(l:current_word, l:line)
 endfun
 
 fun! s:get_current_word()
