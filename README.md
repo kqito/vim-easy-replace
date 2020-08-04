@@ -45,6 +45,24 @@ You can install it as follows.
 
 - **[Vim-plug](https://github.com/junegunn/vim-plug)**
   - `Plug 'kqito/vim-easy-replace'`
+  
+
+### Usage
+#### General
+By default, you can start using easy-replace with the map `<Leader>ra`
+  
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29191111/89293156-62d94280-d698-11ea-89c6-8da583d195cb.gif" width="800" alt="demo">
+</p>
+
+Also, you can use `<Leader>rc` to replace the word under the cursor.
+
+#### For a specific range
+You can start easy-replace with `<Leader>ra` (default) while selecting a range from the visual mode, then start using easy-replace for the range.
+    
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29191111/89293563-17736400-d699-11ea-80fa-95f8d585e857.gif" width="800" alt="demo">
+</p>
 
 
 ## Customize options
