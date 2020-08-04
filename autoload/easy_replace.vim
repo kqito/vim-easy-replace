@@ -59,7 +59,7 @@ fun! easy_replace#generate_context(current_word, line)
 endfun
 
 fun! easy_replace#replace()
-  let l:replace = s:context.replace_range . 's/' . s:context.pattern . '/' . s:context.replace . '/g'
+  let l:replace = s:context.replace_range . 's/' . s:context.pattern . '/' . s:context.replace . '/gI'
 
   redraw
 
@@ -82,7 +82,7 @@ fun! easy_replace#highlight()
   try
     call win_gotoid(s:context.origin_window_id)
     if s:context.pattern != ""
-      exe 'match EasyReplace /' . s:context.highlight_range . s:context.pattern . '/'
+      exe 'silent! match EasyReplace /' . s:context.highlight_range . s:context.pattern . '/'
     else
       match none
     endif
