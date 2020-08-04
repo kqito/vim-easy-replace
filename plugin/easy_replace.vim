@@ -59,17 +59,6 @@ let g:easy_replace_highlight_guibg =
 let g:easy_replace_add_history =
   \ get(g:, 'easy_replace_add_history', 1)
 
-
-let s:code_list = {
-  \  'enter':        char2nr("\<CR>"),
-  \  'escape':       char2nr("\<Esc>"),
-  \  'ctrl-u':       char2nr("\<C-u>"),
-  \  'backspace':    "\<BS>",
-  \  'delete':       "\<DEL>",
-  \  'left-arrow':   "\<Left>",
-  \  'right-arrow':  "\<Right>",
-\  }
-
 ""
 " Start replacing with the easy replace plugin.
 com! EasyReplaceWord call s:replaceWord('', {})
