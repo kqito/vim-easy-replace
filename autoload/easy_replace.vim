@@ -72,7 +72,7 @@ fun! easy_replace#replace()
       call histadd(':', l:replace)
     endif
   catch
-    echo 'Failed replace.'
+    echo 'Replacement failed.'
   endtry
 endfun
 

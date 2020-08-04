@@ -59,8 +59,8 @@ COMMANDS                                               *easy-replace-commands*
 
 :EasyReplaceCwordInVisual                          *:EasyReplaceCwordInVisual*
   Start replacing the selected line in visual mode with the easy replace
-  plugin. unlike the EasyReplaceCurrentWord command, it will start replacing
-  with the word under the current cursor set as the target.
+  plugin. unlike the EasyReplaceCword command, it will start replacing with
+  the word under the current cursor set as the target.
 
 
 vim:tw=78:ts=8:ft=help:norl:

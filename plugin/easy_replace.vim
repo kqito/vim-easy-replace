@@ -86,7 +86,7 @@ com! EasyReplaceCword call s:replaceWord(s:get_current_word(), {})
 
 ""
 " Start replacing the selected line in visual mode with the easy replace plugin.
-" unlike the EasyReplaceCurrentWord command,
+" unlike the EasyReplaceCword command,
 " it will start replacing with the word under the current cursor set as the target.
 com! EasyReplaceCwordInVisual call s:replaceWord(s:get_current_word(), s:get_line())
 
