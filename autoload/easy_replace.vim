@@ -129,12 +129,21 @@ fun! easy_replace#exit()
   endif
 
   stopinsert
-  bwipeout!
+  try
+    if buflisted(bufnr('%'))
+      bwipeout!
+    endif
+  catch /^Vim\%((\a\+)\)\=:E315/
+  endtry
 
   call easy_replace#stop_highlight()
 endfun
 
 fun! easy_replace#stop_highlight()
+  if win_id2win(s:context.origin_window_id) == -1
+    return
+  endif
+
   call win_gotoid(s:context.origin_window_id)
   match none
 endfun
@@ -148,7 +157,7 @@ fun! easy_replace#create_window()
   inoremap <buffer> <silent> <ESC> <ESC>:call easy_replace#exit()<CR>
   inoremap <buffer> <silent> <CR> <ESC>:call easy_replace#next_mode()<CR>
   autocmd TextChangedI,TextChangedP <buffer> call easy_replace#update_char()
-  autocmd BufWinLeave <buffer> call easy_replace#stop_highlight()
+  autocmd BufWinLeave <buffer> if buflisted(bufnr('%')) | try | call easy_replace#stop_highlight() | catch /^Vim\%((\a\+)\)\=:E315/ | endtry | endif
 endfun
 
 fun! easy_replace#echo_status()
